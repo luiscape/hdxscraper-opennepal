@@ -13,7 +13,7 @@ def Main():
     #
     # Collecting URLs from OpenNepal.
     #
-    print '%s Collecting data from OpenNepal.' % item('bullet')
+    print '%s Collecting dataset URLs from OpenNepal.' % item('bullet')
 
     urls = []
     for page in range(0, 11):
@@ -32,6 +32,7 @@ def Main():
     #
     errors = 0
     content = []
+    print '%s Scraping datasets.' % item('bullet')
     for url in urls:
       try:
         c = Scraper.ScrapeContent(url=url['url'])

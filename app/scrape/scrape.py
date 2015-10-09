@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def ScrapeURLs(page, verbose=False):
-  '''Scrapes REACH's webiste and assembles a list of dataset per country.'''
+  '''Scrapes the OpenNepal website for dataset URLs.'''
 
   if verbose:
     print 'Scraping the OpenNepal page: %s' % page
