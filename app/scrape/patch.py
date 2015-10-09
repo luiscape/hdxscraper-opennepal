@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+from unicodedata import normalize
 
 def Date(data):
   '''Patching date stamps.'''
@@ -12,3 +13,10 @@ def Date(data):
     record['date'] = '{year}-{month}'.format(year=record['year'], month=m)
 
   return data
+
+
+def Slug(text):
+  '''Slugiffy strings of text.'''
+
+  text = text.lower().replace(' ', '-')
+  return text
