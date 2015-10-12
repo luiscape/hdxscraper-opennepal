@@ -5,4 +5,3 @@
 #
 source venv/bin/activate
 nosetests --with-coverage -v -d
-coverage report -m
