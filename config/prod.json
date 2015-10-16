@@ -1,0 +1,9 @@
+{
+  "hdx_site": "https://data.hdx.rwlabs.org/",
+  "hdx_key": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "json_folder": "data",
+  "verbose": false,
+  "delete_resources": false,
+  "delete_datasets": false,
+  "update_all_datasets": false
+}
