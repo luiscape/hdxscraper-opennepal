@@ -19,9 +19,11 @@ pyasn1==0.1.9
 pycparser==2.14
 pyOpenSSL==0.15.1
 python-editor==0.4
+python-slugify==1.1.4
 requests==2.8.0
 schedule==0.3.2
 scraperwiki==0.5.1
 six==1.10.0
 SQLAlchemy==1.0.8
 termcolor==1.1.0
+Unidecode==0.4.18
