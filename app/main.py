@@ -102,7 +102,7 @@ def ExportJSON(data):
   # to the default dir.
   #
   ExportDatasets(data, data_dir)
-  # ExportResources(data, data_dir)
+  ExportResources(data, data_dir)
 
   print '%s Successfully exported JSON files.\n' % item('success')
 
@@ -129,3 +129,7 @@ def Main(development=False):
   # Create static JSON files.
   #
   ExportJSON(data=pdata)
+
+
+if __name__ == '__main__':
+  Main()
