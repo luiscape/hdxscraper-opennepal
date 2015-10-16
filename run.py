@@ -9,7 +9,7 @@ from app.utilities.format import item
 #
 # Setting-up schedule.
 #
-schedule.every(30).seconds.do(App.Main)
+schedule.every(1).seconds.do(App.Main)
 
 def Main(verbose=True):
   '''Wrapper to run all the scheduled tasks.'''
