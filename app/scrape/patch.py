@@ -2,21 +2,23 @@
 # -*- coding: utf-8 -*-
 
 import time
+from slugify import slugify
 from unicodedata import normalize
 
-def Date(data):
+def Date(record):
   '''Patching date stamps.'''
 
-  for record in data:
-    m = time.strptime(record['month_en'], '%B')
-    m = time.strftime('%m', m)
-    record['date'] = '{year}-{month}'.format(year=record['year'], month=m)
-
-  return data
+  a = time.strptime(record, '%B %d, %Y')
+  b = time.strftime('%m/%d/%Y', a)
+  return b
 
 
 def Slug(text):
   '''Slugiffy strings of text.'''
 
-  text = text.lower().replace(' ', '-')
-  return text
+  try:
+    return slugify(text)
+
+  except Exception as e:
+    print 'Failed to patch data.'
+    print e

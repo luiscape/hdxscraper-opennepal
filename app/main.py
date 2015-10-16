@@ -3,12 +3,14 @@
 
 import os
 import scraperwiki
-from scrape.patch import Slug
+import scrape.patch as Patcher
 import scrape.scrape as Scraper
+
 from utilities.format import item
 from utilities.db import CleanTable, StoreRecords
+from scrape.export import ExportDatasets,ExportResources
 
-def CollectAndStore():
+def Collect():
   '''Scrapes and stores data in database.'''
 
   try:
@@ -53,7 +55,7 @@ def CollectAndStore():
     CleanTable('opennepal_content')
     StoreRecords(content, 'opennepal_content')
 
-    print '%s Collected data from OpenNepal successfully.' % item('success')
+    print '%s Collected data from OpenNepal successfully.\n' % item('success')
     scraperwiki.status('ok')
 
     return content
@@ -69,33 +71,61 @@ def Patch(data):
 
   out = []
   for record in data:
-    record['id'] = Slug(record['title'])
+    record['id'] = Patcher.Slug(record['title'])
+    record['dataset_date'] = Patcher.Date(record['date'])
     out.append(record)
+
+
+  #
+  # Storing content.
+  #
+  CleanTable('opennepal_content')
+  StoreRecords(out, 'opennepal_content')
+  print '%s Patched data successfully.\n' % item('success')
 
   return out
 
 
 def ExportJSON(data):
   '''Exports scraped data to JSONs in disk.'''
+
+  print '%s Exporting datasets JSON to disk.' % item('bullet')
+
   #
   # Default directory.
   #
-  data_dir = os.path.join(os.path.split(dir)[0], 'data')
+  d = os.path.split(os.path.dirname(os.path.realpath(__file__)))[0]
+  data_dir = os.path.join(d, 'data')
 
   #
   # Calling JSON generators
   # to the default dir.
   #
-  print '%s Exporting datasets JSON to disk.' % item('bullet')
   ExportDatasets(data, data_dir)
   # ExportResources(data, data_dir)
 
   print '%s Successfully exported JSON files.\n' % item('success')
 
 
-def Main():
+def Main(development=False):
   '''Wrapper.'''
 
-  data = CollectAndStore()
-  data = Patch(data)
-  ExportJSON(data=data)
+  #
+  # Either collect data or use
+  # previously collected data from
+  # database.
+  #
+  if development is False:
+    data = Collect()
+    pdata = Patch(data)
+
+  else:
+    cursor = scraperwiki.sqlite.execute('SELECT * FROM opennepal_content')
+    pdata = []
+    for record in cursor['data']:
+      pdata.append(dict(zip(cursor['keys'], record)))
+
+  #
+  # Create static JSON files.
+  #
+  ExportJSON(data=pdata)
