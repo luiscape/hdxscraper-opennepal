@@ -8,8 +8,11 @@ import requests
 from copy import copy
 from datetime import datetime
 
-def ExportDatasets(data):
+def ExportDatasets(data, directory=None):
   '''Function to export datasets in a JSON format.'''
+
+  if directory == None:
+    print 'Provide directory.'
 
   #
   # Default dataset.
@@ -39,6 +42,7 @@ def ExportDatasets(data):
     'groups': []  # has to be ISO-3-letter-code. {'id': None}
     }
 
+  out = []
   for record in data:
 
     t = default_dataset
@@ -46,10 +50,10 @@ def ExportDatasets(data):
     #
     # Adding fields from records.
     #
-    t['title'] = record['title']
     t['name'] = record['id']
-    # t['dataset_date'] = record['created']
+    t['title'] = record['title']
     t['notes'] = record['description']
+    t['dataset_date'] = record['dataset_date']
 
     #
     # Adding tags and country.
@@ -61,17 +65,17 @@ def ExportDatasets(data):
     #
     # Appending results.
     #
-    data.append(copy(t))
+    out.append(copy(t))
 
   #
   # Write JSON to disk.
   #
   with open(os.path.join(directory, 'datasets.json'), 'w') as outfile:
-    json.dump(data, outfile)
+    json.dump(out, outfile)
 
 
 
-def ExportResources(directory=None):
+def ExportResources(data, directory=None):
   '''Export the UNOSAT resources for their respective datasets.'''
 
   print '%s Exporting Resources JSON to disk.' % item('prompt_bullet')
