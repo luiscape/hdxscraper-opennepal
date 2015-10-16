@@ -106,7 +106,7 @@ def ScrapeContent(url, verbose=False):
   out = {
     'title': title,
     'license': license,
-    'tags': tags[0],
+    'tags': tags[0].replace('/', '-'),
     'date': date,
     'description': description,
     'resource_url': resource['url'],
