@@ -17,7 +17,7 @@ def Slug(text):
   '''Slugiffy strings of text.'''
 
   try:
-    return slugify(text)
+    return slugify(text)[0:90]
 
   except Exception as e:
     print 'Failed to patch data.'
