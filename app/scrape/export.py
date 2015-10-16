@@ -33,8 +33,8 @@ def ExportDatasets(data, directory=None):
     'caveats': None,
     'methodology': 'Other',  # default for OpenNepal
     'methodology_other': None,
-    'dataset_source': '',
-    'package_creator': '',
+    'dataset_source': 'OpenNepal',
+    'package_creator': 'luiscape',
     'private': False,  # has to be True or False
     'url': None,
     'state': 'active',  # always "active"
@@ -58,7 +58,7 @@ def ExportDatasets(data, directory=None):
     #
     # Adding tags and country.
     #
-    t['tags'] = [{ 'name': record['tags'] }, { 'name': 'geodata' }]
+    t['tags'] = [{ 'name': record['tags'] }]
     t['groups'] = [{ 'id': 'npl' }]
 
 
@@ -78,9 +78,6 @@ def ExportDatasets(data, directory=None):
 def ExportResources(data, directory=None):
   '''Export the UNOSAT resources for their respective datasets.'''
 
-  print '%s Exporting Resources JSON to disk.' % item('prompt_bullet')
-
-
   #
   # Default resource.
   #
@@ -92,26 +89,26 @@ def ExportResources(data, directory=None):
     "description": None  # file size could go here.
   }
 
-  data = []
-  for record in records:
+  out = []
+  for record in data:
 
     t = default_resource
 
     #
     # Adding fields from records.
     #
-    t['package_id'] = record['hdx_dataset_id']
-    t['url'] = record['link_href']
-    t['name'] = record['file_name']
-    t['format'] = record['file_extension']
+    t['package_id'] = record['id']
+    t['url'] = record['resource_url']
+    t['name'] = record['resource_name']
+    t['format'] = record['resource_type']
 
     #
     # Appending results.
     #
-    data.append(copy(t))
+    out.append(copy(t))
 
   #
   # Write JSON to disk.
   #
   with open(os.path.join(directory, 'resources.json'), 'w') as outfile:
-    json.dump(data, outfile)
+    json.dump(out, outfile)
