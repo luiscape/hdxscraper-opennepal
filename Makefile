@@ -9,3 +9,6 @@ test:
 
 register:
 	bash bin/register.sh;
+
+scrape:
+	bash bin/scrape.sh;
