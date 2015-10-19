@@ -56,6 +56,15 @@ def ExportDatasets(data, directory=None):
     t['dataset_date'] = record['dataset_date']
 
     #
+    # Adding license.
+    #
+    license = record.get('license', None)
+    if license is not None:
+      t['license_other'] = license
+      if license == 'Open Data Commons Open Database License (ODbL)':
+        t['license_id'] = 'hdx-odc-odbl'
+
+    #
     # Adding tags and country.
     #
     t['tags'] = [{ 'name': record['tags'] }]
