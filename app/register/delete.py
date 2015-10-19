@@ -40,8 +40,6 @@ def DeleteAllDatasetsFromOrg(organization, hdx_site, apikey, verbose=True):
   # Fetching dataset information.
   dataset_dict = requests.get(organization_show_url + organization, headers=headers, auth=('dataproject', 'humdata')).json()
 
-
-
   #
   # Progress bar.
   #

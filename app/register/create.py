@@ -83,7 +83,12 @@ def CreateDatasets(dataset_dict, hdx_site, apikey, verbose=True, update_all_data
 
 
       if r.status_code != 200:
-        if verbose:
+
+        if r.json()['error']['__type'] == 'Validation Error':
+          print "%s Dataset exists. Updating. %s" % (I('warn'), dataset["name"])
+          r = requests.post(package_update_url, data=json.dumps(dataset), headers=headers, auth=('dataproject', 'humdata'))
+
+        else:
           print "%s failed to create %s" % (I('error'), dataset["name"])
           print r.json()
 

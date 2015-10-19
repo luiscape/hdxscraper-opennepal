@@ -31,7 +31,7 @@ def Main():
     #
     if p['delete_datasets']:
       try:
-        delete.DeleteAllDatasetsFromOrg(organization='un-operational-satellite-appplications-programme-unosat', hdx_site=p['hdx_site'], apikey=p['hdx_key'], verbose=p['verbose'])
+        delete.DeleteAllDatasetsFromOrg(organization='opennepal', hdx_site=p['hdx_site'], apikey=p['hdx_key'], verbose=p['verbose'])
 
       except Exception as e:
         print e

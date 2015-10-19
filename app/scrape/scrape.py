@@ -5,7 +5,7 @@ import urlparse
 import requests
 from bs4 import BeautifulSoup
 
-def ScrapeURLs(page, verbose=False):
+def ScrapeURLs(page, filters=True, verbose=False):
   '''Scrapes the OpenNepal website for dataset URLs.'''
 
   if verbose:
@@ -15,6 +15,9 @@ def ScrapeURLs(page, verbose=False):
   # Assemble URL.
   #
   u = 'http://data.opennepal.net/datasets?page=%s' % page
+  if filters is True:
+    u += 'field_dataset_sector_tid[0]=107&field_dataset_sector_tid[1]=7&field_dataset_sector_tid[2]=112&field_dataset_sector_tid[3]=146&field_dataset_sector_tid[4]=144&field_dataset_sector_tid[5]=147&field_dataset_sector_tid[6]=148&field_dataset_sector_tid[7]=100&field_dataset_sector_tid[8]=183&field_dataset_sector_tid[9]=217'
+
 
   try:
 

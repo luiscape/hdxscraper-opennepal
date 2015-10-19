@@ -15,56 +15,50 @@ __version__ = 'v.0.1.2'
 def Collect():
   '''Scrapes and stores data in database.'''
 
-  try:
-    #
-    # Collecting URLs from OpenNepal.
-    #
-    print '%s Collecting dataset URLs from OpenNepal.' % item('bullet')
+  #
+  # Collecting URLs from OpenNepal.
+  #
+  print '%s Collecting dataset URLs from OpenNepal.' % item('bullet')
 
-    urls = []
-    for page in range(0, 11):
-      data = Scraper.ScrapeURLs(page=page)
-      urls += data
+  urls = []
+  for page in range(0, 5):
+    data = Scraper.ScrapeURLs(page=page)
+    urls += data
 
-    #
-    # Storing URLs.
-    #
-    CleanTable('opennepal_urls')
-    StoreRecords(urls, 'opennepal_urls')
-
-
-    #
-    # Scrape content.
-    #
-    errors = 0
-    content = []
-    print '%s Scraping datasets.' % item('bullet')
-    for url in urls:
-      try:
-        c = Scraper.ScrapeContent(url=url['url'])
-        content.append(c)
-
-      except Exception as e:
-        errors += 1
-        print '%s Error scraping dataset: %s' % (item('error'), url['url'])
+  #
+  # Storing URLs.
+  #
+  CleanTable('opennepal_urls')
+  StoreRecords(urls, 'opennepal_urls')
 
 
-    print '%s There were a total of %s error(s) scraping data.'  % (item('warn'), str(errors))
+  #
+  # Scrape content.
+  #
+  errors = 0
+  content = []
+  print '%s Scraping datasets.' % item('bullet')
+  for url in urls:
+    try:
+      c = Scraper.ScrapeContent(url=url['url'])
+      content.append(c)
 
-    #
-    # Storing content.
-    #
-    CleanTable('opennepal_content')
-    StoreRecords(content, 'opennepal_content')
+    except Exception as e:
+      errors += 1
+      print '%s Error scraping dataset: %s' % (item('error'), url['url'])
 
-    print '%s Collected data from OpenNepal successfully.\n' % item('success')
-    scraperwiki.status('ok')
 
-    return content
+  print '%s There were a total of %s error(s) scraping data.'  % (item('warn'), str(errors))
 
-  except Exception as e:
-    print '%s OpenNepal Scraper failed.' % item('error')
-    scraperwiki.status('error', 'Collection failed.')
+  #
+  # Storing content.
+  #
+  CleanTable('opennepal_content')
+  StoreRecords(content, 'opennepal_content')
+
+  print '%s Collected data from OpenNepal successfully.\n' % item('success')
+
+  return content
 
 
 def Patch(data):
@@ -112,25 +106,37 @@ def ExportJSON(data):
 def Main(development=False):
   '''Wrapper.'''
 
-  #
-  # Either collect data or use
-  # previously collected data from
-  # database.
-  #
-  if development is False:
-    data = Collect()
-    pdata = Patch(data)
+  try:
+    #
+    # Either collect data or use
+    # previously collected data from
+    # database.
+    #
+    if development is False:
+      data = Collect()
+      pdata = Patch(data)
 
-  else:
-    cursor = scraperwiki.sqlite.execute('SELECT * FROM opennepal_content')
-    pdata = []
-    for record in cursor['data']:
-      pdata.append(dict(zip(cursor['keys'], record)))
+    else:
+      cursor = scraperwiki.sqlite.execute('SELECT * FROM opennepal_content')
+      pdata = []
+      for record in cursor['data']:
+        pdata.append(dict(zip(cursor['keys'], record)))
+
+    #
+    # Create static JSON files.
+    #
+    ExportJSON(data=pdata)
+    scraperwiki.status('ok')
+
 
   #
-  # Create static JSON files.
+  # Send notification if scraper fails.
   #
-  ExportJSON(data=pdata)
+  except Exception as e:
+    print '%s OpenNepal Scraper failed.' % item('error')
+    scraperwiki.status('error', 'Collection failed.')
+    os.system("mail -s 'OpenNepal: Scraper failed.' capelo@un.org")
+
 
 
 if __name__ == '__main__':
