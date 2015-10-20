@@ -10,7 +10,7 @@ from utilities.format import item
 from utilities.db import CleanTable, StoreRecords
 from scrape.export import ExportDatasets,ExportResources
 
-__version__ = 'v.0.2.0'
+__version__ = 'v.0.2.1'
 
 def Collect():
   '''Scrapes and stores data in database.'''
