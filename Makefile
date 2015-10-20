@@ -7,8 +7,8 @@ run:
 test:
 	bash bin/test.sh;
 
-register:
-	bash bin/register.sh;
-
 scrape:
 	bash bin/scrape.sh;
+
+register:
+	bash bin/register.sh;
