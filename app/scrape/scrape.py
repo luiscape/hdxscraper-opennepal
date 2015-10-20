@@ -118,6 +118,3 @@ def ScrapeContent(url, verbose=False):
   }
 
   return out
-
-
-

@@ -46,8 +46,6 @@ def StoreRecords(data, table):
     return False
 
 
-
-
 def ReadAllRecords(table_name, verbose=True):
   '''Clean all records from table in database.'''
 
@@ -60,7 +58,6 @@ def ReadAllRecords(table_name, verbose=True):
   # SQL execution.
   #
   try:
-    print scraperwiki.sqlite.execute(sql)['data']
     return scraperwiki.sqlite.execute(sql)['data']
 
   except Exception as e:
@@ -68,4 +65,3 @@ def ReadAllRecords(table_name, verbose=True):
       print '%s Failed to read table `%s`.' % (item('error'), table_name)
       print e
       return False
-
