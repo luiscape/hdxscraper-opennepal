@@ -51,7 +51,7 @@ def ExportDatasets(data, directory=None):
     # Adding fields from records.
     #
     t['name'] = record['id']
-    t['title'] = record['title']
+    t['title'] = 'Nepal - ' + record['title']  # patching names.
     t['notes'] = record['description']
     t['dataset_date'] = record['dataset_date']
 
