@@ -20,7 +20,7 @@ def Main():
   #
   # Setting up configuration: dev = development; prod = production.
   #
-  p = LoadConfig(os.path.join(os.path.split(dir)[0], 'config', 'dev.json'))
+  p = LoadConfig(os.path.join(os.path.split(dir)[0], 'config', 'prod.json'))
   if p is not False:
 
     print "--------------------------------------------------"
