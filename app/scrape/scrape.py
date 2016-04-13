@@ -18,7 +18,6 @@ def ScrapeURLs(page, filters=True, verbose=False):
   if filters is True:
     u += 'field_dataset_sector_tid[0]=107&field_dataset_sector_tid[1]=7&field_dataset_sector_tid[2]=112&field_dataset_sector_tid[3]=146&field_dataset_sector_tid[4]=144&field_dataset_sector_tid[5]=147&field_dataset_sector_tid[6]=148&field_dataset_sector_tid[7]=100&field_dataset_sector_tid[8]=183&field_dataset_sector_tid[9]=217'
 
-
   try:
 
     #
@@ -79,31 +78,34 @@ def ScrapeContent(url, verbose=False):
   # Tags.
   #
   tags = []
-  region = soup.select('.region-inside')
-  for tag in region[0].select('.field-item'):
+  region = soup.select('.views-field-field-dataset-keywords')
+  for tag in region[0].find_all('a'):
     tags.append(tag.text)
+
 
   #
   # License and date.
   #
-  license = soup.select('.ds-mid-right')[0].select('.field-item .even')[0].text.replace('\n', '')
-  date = soup.select('.ds-mid-right')[0].select('.date-display-single')[0].text.rstrip()
+  license_selector = soup.select('.views-field-field-dataset-license')[0].select('.field-content')
+  license = license_selector[0].text
+
+  date = soup.select('.date-display-single')[0].text
 
   #
   # Description.
   #
-  description = soup.select('.field-type-text-with-summary')[0].select('.field-item')[0].text
+  description = soup.select('.views-field-body')[0].find_all('p')[0].text
 
   #
   # Resource name, link, and type.
   #
   resource = {
-    'url': 'http://data.opennepal.net',
+    'url': None,
     'name': None,
     'type': None
   }
-  resource['url'] += soup.select('.view-resource-download')[0].findAll('a', href=True)[0]['href']
-  resource['name'] = resource['url'].split('/')[-1].split('&')[0]
+  resource['url'] = soup.select('.views-field-nothing')[0].findAll('a', href=True)[0]['href']
+  resource['name'] = resource['url'].split('/')[-1].split('&')[0].split('?')[0]
   resource['type'] = resource['name'].split('.')[1].upper()
 
   out = {
