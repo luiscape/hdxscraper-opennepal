@@ -46,6 +46,7 @@ def Collect():
     except Exception as e:
       errors += 1
       print '%s Error scraping dataset: %s' % (item('error'), url['url'])
+      print e
 
 
   print '%s There were a total of %s error(s) scraping data.'  % (item('warn'), str(errors))
