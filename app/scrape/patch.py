@@ -8,7 +8,7 @@ from unicodedata import normalize
 def Date(record):
   '''Patching date stamps.'''
 
-  a = time.strptime(record, '%B %d, %Y')
+  a = time.strptime(record, '%b %d, %Y')
   b = time.strftime('%m/%d/%Y', a)
   return b
 
