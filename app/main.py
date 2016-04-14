@@ -12,7 +12,7 @@ from scrape.export import ExportDatasets,ExportResources
 
 __version__ = 'v.0.2.1'
 
-def Collect():
+def collect():
   '''Scrapes and stores data in database.'''
 
   #
@@ -21,7 +21,7 @@ def Collect():
   print '%s Collecting dataset URLs from OpenNepal.' % item('bullet')
 
   urls = []
-  for page in range(0, 5):
+  for page in range(0, 1):
     data = Scraper.ScrapeURLs(page=page)
     urls += data
 
@@ -62,7 +62,7 @@ def Collect():
   return content
 
 
-def Patch(data):
+def patch(data):
   '''Patching data.'''
   print '%s Patching data.' % item('bullet')
 
@@ -83,7 +83,7 @@ def Patch(data):
   return out
 
 
-def ExportJSON(data):
+def export_json(data):
   '''Exports scraped data to JSONs in disk.'''
 
   print '%s Exporting datasets JSON to disk.' % item('bullet')
@@ -104,8 +104,10 @@ def ExportJSON(data):
   print '%s Successfully exported JSON files.\n' % item('success')
 
 
-def Main(development=False):
+def main(development=False):
   '''Wrapper.'''
+
+  data = collect()
 
   try:
     #
@@ -114,8 +116,8 @@ def Main(development=False):
     # database.
     #
     if development is False:
-      data = Collect()
-      pdata = Patch(data)
+      data = collect()
+      pdata = patch(data)
 
     else:
       cursor = scraperwiki.sqlite.execute('SELECT * FROM opennepal_content')
@@ -126,7 +128,7 @@ def Main(development=False):
     #
     # Create static JSON files.
     #
-    ExportJSON(data=pdata)
+    export_json(data=pdata)
     scraperwiki.status('ok')
 
 
@@ -135,10 +137,11 @@ def Main(development=False):
   #
   except Exception as e:
     print '%s OpenNepal Scraper failed.' % item('error')
+    print e
     scraperwiki.status('error', 'Collection failed.')
     os.system("mail -s 'OpenNepal: Scraper failed.' capelo@un.org")
 
 
 
 if __name__ == '__main__':
-  Main()
+  main()
